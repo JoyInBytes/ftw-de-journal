@@ -1,88 +1,216 @@
 
 # FTW Data Engineering Journal Template
 
-A minimal learning journal for a **4-Saturday Data Engineering Bootcamp**.  
+A simple repo for two things:
 
-Use it to capture learnings, reflections, vocabulary, and the **DE mindset** — especially for documenting, communicating, and presenting.
+1. practice Git in small, low-pressure steps
+2. document your Data Engineering bootcamp journey
+
+This is for beginners. Your notes do not need to be polished. They just need to be honest, clear, and committed regularly.
 
 ---
 
-## 🚀 Getting Started
+## Do This First
 
-Click **Use this template** (top-right on GitHub) to create your own copy.  
-Or clone and rename:
+1. Copy `templates/entry.md`
+2. Rename it to something like `journal/2026-08-26-day1.md`
+3. Write 3 short bullets
+4. Run 3 Git commands
+5. Stop
+
+That is already a successful session.
+
+```bash
+git add .
+git commit -m "Add Day 1 journal"
+git push
+```
+
+---
+
+## Start Here
+
+Create your own copy with **Use this template** on GitHub.
+
+If you prefer working locally:
 
 ```bash
 git clone https://github.com/ogbinar/ftw-de-journal.git
-````
+```
+
+You can also edit in the browser with [github.dev](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor).
 
 ---
 
-## 📝 How to Use
+## What This Repo Is For
 
-1. **Create an entry** for each session:
+Many people in a bootcamp are still getting used to:
 
-   * Copy `templates/entry.md` to `journal/YYYY-MM-DD-topic.md`
-   * Example: `journal/2025-09-13-day1.md`
+- Git
+- GitHub
+- Markdown
+- technical vocabulary
+- writing about what they learned
 
-2. **Write during/after class** (10–15 mins is fine).
+This repo gives you one safe habit:
 
-3. **Commit small & often**:
+**one class or study session = one journal entry = one Git commit**
 
-   ```bash
-   git add . 
-   git commit -m "Add Day 1 notes"
-   git push
-   ```
-or you can also use [github.dev](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor).
-
-4. **Present from your journal** in standups/demos.
+That is enough.
 
 ---
 
-## 📚 Learn Markdown
+## The Easiest Workflow
 
-This journal uses [Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) — a simple way to format text on GitHub.
-Learning Markdown will make your notes cleaner and easier to read (headings, bullets, tables, code blocks, etc.).
+1. Copy `templates/entry.md`
+2. Save it in `journal/`
+3. Write short notes after class or after self-study
+4. Commit your change
+5. Push it to GitHub
 
-Quick examples:
+If you want more prompts later, use `templates/entry-extended.md`.
+
+Example filename:
+
+```text
+journal/2026-08-26-day1.md
+```
+
+Example commit:
+
+```bash
+git add .
+git commit -m "Add Day 1 journal"
+git push
+```
+
+If you only remember one rule, remember this:
+
+**small notes, small commits, often**
+
+---
+
+## What A Good Enough Entry Looks Like
+
+This is enough:
 
 ```markdown
-# Heading 1
-## Heading 2
-- Bullet point
-- **Bold** and *italic*
-`inline code`
+# Journal - 2026-08-26 - Day 1
+
+## What I learned
+- I learned what a repository is.
+
+## What confused me
+- I still mix up Git and GitHub.
+
+## One small next step
+- [ ] Make one more practice commit
 ```
+
+Messy is okay. Short is okay. Incomplete is okay.
 
 ---
 
-## 📂 Suggested File Naming
+## Minimum Viable Journal Entry
 
-```
+If you are tired or overwhelmed, write only these:
+
+- what I learned today
+- what confused me
+- one next step
+
+That still counts as a good entry.
+
+---
+
+## Folder Guide
+
+- `templates/` - starting files you can copy
+- `journal/` - your actual entries
+- `assets/` - optional images and extras
+
+---
+
+## What These Git Commands Mean
+
+- `git add .` - prepare your changes
+- `git commit -m "Add Day 1 journal"` - save a checkpoint with a message
+- `git push` - upload your checkpoint to GitHub
+
+You do not need to memorize everything on day 1. Repetition is the goal.
+
+---
+
+## Suggested Structure
+
+```text
 journal/
-  2025-09-13-day1.md
-  2025-09-20-day2.md
-  2025-09-27-day3.md
-  2025-10-04-day4.md
+  2026-08-26-day1.md
+  2026-09-02-day2.md
+  2026-09-09-day3.md
+  2026-09-16-day4.md
+```
+
+You can also name files by topic:
+
+```text
+journal/2026-08-26-sql-basics.md
+journal/2026-08-27-git-practice.md
 ```
 
 ---
 
-## 🧠 Data Engineering Mindset (keep visible)
+## Helpful Habits for Data Engineering
 
-* **Raw stays raw** → Clean → **Mart** (separate layers).
-* **Reproducible**: scripts/configs over manual steps.
-* **Document assumptions & decisions** (why, not just what).
-* **Communicate clearly**: inputs, outputs, owners, SLAs.
-* **Small changes**: atomic commits; test + verify.
-* **Observe & log**: data quality, lineage, and failure points.
+You do not need to master these yet. Ignore this section at first if you want. Just start noticing these ideas over time.
+
+- Keep the original data untouched when possible.
+- Clean data in a separate step.
+- Write down assumptions, not just answers.
+- Prefer repeatable steps over memory-based manual work.
+- Explain where data came from and where it goes next.
+- Break work into small changes that are easier to check.
 
 ---
 
-## 🎤 Presenting with This Journal
+## Markdown Basics
 
-* Start with **context** (dataset, goal, constraints).
-* Show a **diagram** (even a quick sketch) of flow (Raw → Clean → Mart).
-* Call out **trade-offs** (cost, freshness, complexity).
-* End with **next steps** + **open questions**.
+This repo uses [Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax), which is just a simple way to format notes.
+
+```markdown
+# Big heading
+## Smaller heading
+- bullet
+- another bullet
+**bold**
+`code`
+```
+
+You do not need fancy formatting. Plain bullet points are enough.
+
+---
+
+## How This Helps With Git
+
+This repo is not just for note-taking. It is a safe place to practice:
+
+- creating a file
+- editing a file
+- committing a change
+- pushing to GitHub
+- building confidence through repetition
+
+Every new entry is another Git rep.
+
+---
+
+## Using Your Journal in Standups or Demos
+
+If you need to share progress, your journal already gives you a script:
+
+- what we worked on
+- what I understood
+- what is still unclear
+- what I will do next
+
+That is already a strong update.

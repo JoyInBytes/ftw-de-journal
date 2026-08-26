@@ -1,30 +1,16 @@
-# Journal — {{DATE}} — {{TOPIC OR DAY N}}
+# Journal - {{DATE}} - {{TOPIC OR DAY N}}
 
-## 1) What I learned (bullets, not prose)
+## What I learned
+- 
 - 
 
-## 2) New vocabulary (define in your own words)
-- **term** — my definition
+## What confused me
 - 
 
-## 3) Data Engineering mindset applied (what principles did I use?)
-- 
-
-## 4) Decisions & assumptions (why, alternatives, trade-offs)
-- 
-
-## 5) Open questions (things I still don’t get)
-- 
-
-## 6) Next actions (small, doable steps)
+## One small next step
 - [ ] 
 
-## 7) Artifacts & links (code, queries, dashboards)
-- 
-
----
-
-### Mini reflection (3–5 sentences)
-What surprised me? What would I do differently next time? What will I watch out for in production?
-
-### BONUS: What is a meme that best describes what you feel or your learning today?
+## Git checkpoint
+- [ ] I created or updated a file
+- [ ] I wrote a commit
+- [ ] I pushed my changes
