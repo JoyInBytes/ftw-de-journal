@@ -4,6 +4,11 @@ A simple record of the projects I build while growing as a Data Engineer.
 
 > One project = one short document: what I built, what I learned, and what comes next.
 
+## Connected Learning Repositories
+
+- [Learning Notes](https://github.com/JoyInBytes/learning-notes) — beginner-friendly Data Engineering notes.
+- [Daily Learning Logs](daily-logs/) — short records of what I learned and built each day.
+
 ## Project Index
 
 | Project | Main focus | Status | Documentation | Repository or demo |
@@ -46,6 +51,7 @@ git push
 ## Folder Guide
 
 - `journal/` - project snapshots and learning entries
+- `daily-logs/` - daily learning and progress notes
 - `templates/` - reusable journal templates
 - `assets/` - optional images
 
