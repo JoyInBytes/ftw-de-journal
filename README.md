@@ -15,6 +15,7 @@ A simple record of the projects I build while growing as a Data Engineer.
 |---|---|---|---|---|
 | Sari-Sari Store Medallion Pipeline | Databricks SQL, Delta Lake, data quality | In progress | [Read entry](journal/2026-08-19-sarisari-store-medallion-pipeline.md) | Private source |
 | Sari-Sari Store Dashboard | Analytics and reporting | Planned | [Read entry](journal/2026-08-24-sarisari-store-dashboard.md) | [Repository](https://github.com/JoyInBytes/sarisaristore-dashboard) |
+| Chinook Sales Data Warehouse | Databricks SQL, star schema, Tableau, Git and CI/CD | Complete | [Read entry](journal/2026-09-05-chinook-sales-data-warehouse.md) | [Team repository](https://github.com/ItsYangCoder/d3-chinook-dimensional-model) |
 | Fit.ly Churn Analysis | Python analysis, validation, KPI design | Analysis complete | [Read entry](journal/2026-08-26-fitly-churn-analysis.md) | Private source |
 | Learning Notes | Git, GitHub, and Data Engineering concepts | Ongoing | [Read entry](journal/2026-08-29-learning-notes.md) | [Repository](https://github.com/JoyInBytes/learning-notes) |
 | Pac-Joy: Data Pipeline Maze | Data pipeline and SQL learning game | Live | [Read entry](journal/2026-09-01-pac-joy-data-pipeline-maze.md) | [Play Pac-Joy](https://pac-joy-data-maze.ceejaybalansay23.chatgpt.site) |
