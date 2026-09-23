@@ -21,7 +21,6 @@ jobs:
         id: create
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_OUTPUT: ${{ github.output }}
         run: python .github/scripts/build_daily_log.py
 
       - name: Commit and push the new daily log
