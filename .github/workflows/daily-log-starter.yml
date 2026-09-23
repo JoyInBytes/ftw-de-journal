@@ -1,0 +1,48 @@
+name: Create Daily Log Starter
+
+on:
+  schedule:
+    # 1:05 PM Philippine time
+    - cron: "5 13 * * *"
+      timezone: "Asia/Manila"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  create-daily-log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Create today's log from the daily-log template
+        id: create
+        shell: bash
+        run: |
+          DATE_FILE="$(TZ=Asia/Manila date +'%Y-%m-%d')"
+          DATE_TITLE="$(TZ=Asia/Manila date +'%B %-d, %Y')"
+          LOG_PATH="daily-logs/${DATE_FILE}.md"
+
+          if [ -e "$LOG_PATH" ]; then
+            echo "created=false" >> "$GITHUB_OUTPUT"
+            echo "A daily log already exists at $LOG_PATH; leaving it unchanged."
+            exit 0
+          fi
+
+          mkdir -p daily-logs
+          sed "s/{{DATE}}/${DATE_TITLE}/g" templates/daily-log.md > "$LOG_PATH"
+          echo "created=true" >> "$GITHUB_OUTPUT"
+          echo "Created $LOG_PATH from templates/daily-log.md."
+
+      - name: Commit and push the new starter
+        if: steps.create.outputs.created == 'true'
+        shell: bash
+        run: |
+          DATE_FILE="$(TZ=Asia/Manila date +'%Y-%m-%d')"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "daily-logs/${DATE_FILE}.md"
+          git commit -m "docs: create daily log starter for ${DATE_FILE}"
+          git push
