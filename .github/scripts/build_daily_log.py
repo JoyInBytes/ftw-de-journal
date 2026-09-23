@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Build a conservative daily learning-log draft from public GitHub events.
-
-Only public GitHub events are available here. This script does not inspect private
-repositories, Databricks, classes, or offline study; prompts mark those gaps.
-"""
+"""Draft a daily Data Engineering log from public GitHub activity and the user's study goal."""
 import json
 import os
 import urllib.request
@@ -16,6 +12,8 @@ TODAY = datetime.now(TZ).date()
 TEMPLATE_PATH = "templates/daily-log.md"
 LOG_PATH = f"daily-logs/{TODAY.isoformat()}.md"
 API_URL = f"https://api.github.com/users/{OWNER}/events?per_page=100"
+CERT_FOCUS = "Databricks Data Engineer Associate certification preparation (October 17, 2026)"
+STUDY_FOCUS = "Databricks and DataCamp Data Engineering learning"
 
 def fetch_events():
     req = urllib.request.Request(
@@ -62,7 +60,7 @@ def event_summary(event):
 
 def infer_topics(items):
     corpus = " ".join((repo + " " + detail) for repo, detail in items).lower()
-    topics = []
+    topics = [STUDY_FOCUS, CERT_FOCUS]
     rules = [
         (("nyc", "taxi", "mobility"), "NYC Mobility data pipeline"),
         (("oulad",), "OULAD dimensional modeling"),
@@ -76,7 +74,7 @@ def infer_topics(items):
     for needles, label in rules:
         if any(n in corpus for n in needles):
             topics.append(label)
-    return topics or ["GitHub project activity (review the activity list below)"]
+    return list(dict.fromkeys(topics))
 
 def render(template, replacements):
     for key, value in replacements.items():
@@ -89,7 +87,6 @@ def main():
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
             out.write("created=false\n")
         return
-
     events = fetch_events()
     items = []
     for event in events:
@@ -98,28 +95,28 @@ def main():
         item = event_summary(event)
         if item:
             items.append(item)
-    # Keep the draft concise and remove duplicate event summaries.
     items = list(dict.fromkeys(items))[:20]
+    study_line = "- **Ongoing study focus:** Continue Databricks/DataCamp/FTW learning and preparation for the October 17, 2026 Databricks Data Engineer Associate exam."
     if items:
-        work = "\n".join(f"- **{repo}:** {detail}" for repo, detail in items)
-        learned = "- GitHub records the work listed above. Add one takeaway you can now explain or do."
-        challenge = "- **Challenge:** Not reliably inferable from a GitHub event. Add it if one occurred; otherwise write “None recorded.”\n- **Fix:** Add the actual fix or write “None recorded.”"
-        next_step = "- [ ] Review this activity, add class/Databricks/offline work, and choose one specific next action."
-        reflection = "This draft captures public GitHub activity from today. Add what felt difficult and what progress means to you."
+        work = "\n".join(f"- **{repo}:** {detail}" for repo, detail in items) + "\n" + study_line
+        learned = "- Connect today's project activity to the certification concepts you are studying; add the exact lesson or takeaway from today's session."
+        challenge = "- **Challenge:** Not inferable from a GitHub event; record the actual blocker if one occurred, or write “None recorded.”\n- **Fix:** Add the real fix or write “None recorded.”"
+        next_step = "- [ ] Review one Associate exam topic, answer practice questions, and add class or offline work not visible on GitHub."
+        reflection = "I am building my Data Engineering skills through Databricks, DataCamp, FTW learning, and hands-on projects while preparing for the October 17 certification."
         assumptions = "- This draft uses public GitHub events only; private repositories and work outside GitHub may be missing."
         topics = infer_topics(items)
     else:
-        work = "- No public GitHub activity for today was found in the recent activity feed."
-        learned = "- Add one thing studied or practiced today; GitHub cannot infer class, Databricks, or offline learning."
-        challenge = "- **Challenge:** Not recorded in public GitHub activity. Add it if one occurred; otherwise write “None today.”\n- **Fix:** Add the actual fix or write “None today.”"
-        next_step = "- [ ] Add today's learning outside GitHub, then choose one small next action."
-        reflection = "No public GitHub activity was found for today. Add a short note about any learning that happened elsewhere."
-        assumptions = "- No public GitHub events were returned for this date; private or offline work may still have happened."
-        topics = ["No public GitHub activity found; add class, Databricks, or offline topics if applicable."]
+        work = study_line + "\n- **Project activity:** No public GitHub event was returned today; add NYC, class, Databricks, or offline work here if applicable."
+        learned = "- Record today's Databricks/DataCamp concept in your own words and connect it to the Associate exam objectives."
+        challenge = "- **Challenge:** Not inferable from today's public GitHub events; add a real blocker if one occurred, or write “None today.”\n- **Fix:** Add the actual fix or write “None today.”"
+        next_step = "- [ ] Review one Associate exam topic, complete practice questions, and note any class or offline study."
+        reflection = "I am steadily preparing for the October 17 Databricks Data Engineer Associate certification while continuing my Data Engineering learning journey."
+        assumptions = "- This draft includes the ongoing study focus you confirmed. No public GitHub events were returned; private or offline work may also have happened."
+        topics = [STUDY_FOCUS, CERT_FOCUS, "Add today's specific lesson or project topic."]
     date_title = TODAY.strftime("%B %-d, %Y")
     content = render(open(TEMPLATE_PATH, encoding="utf-8").read(), {
         "DATE": date_title,
-        "TOPICS": "\n".join(f"- {t}" for t in topics),
+        "TOPICS": "\n".join(f"- {topic}" for topic in topics),
         "WORKED_ON": work,
         "LEARNED": learned,
         "CHALLENGE_FIX": challenge,
@@ -132,7 +129,7 @@ def main():
         f.write(content)
     with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
         out.write("created=true\n")
-    print(f"Created {LOG_PATH} from today's public GitHub activity.")
+    print(f"Created {LOG_PATH} from public GitHub activity and the confirmed study goal.")
 
 if __name__ == "__main__":
     main()
