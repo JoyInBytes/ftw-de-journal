@@ -1,4 +1,4 @@
-name: Create Daily Log Starter
+name: Create Daily Learning Log
 
 on:
   schedule:
@@ -17,26 +17,13 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Create today's log from the daily-log template
+      - name: Draft today's log from public GitHub activity
         id: create
-        shell: bash
-        run: |
-          DATE_FILE="$(TZ=Asia/Manila date +'%Y-%m-%d')"
-          DATE_TITLE="$(TZ=Asia/Manila date +'%B %-d, %Y')"
-          LOG_PATH="daily-logs/${DATE_FILE}.md"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python .github/scripts/build_daily_log.py
 
-          if [ -e "$LOG_PATH" ]; then
-            echo "created=false" >> "$GITHUB_OUTPUT"
-            echo "A daily log already exists at $LOG_PATH; leaving it unchanged."
-            exit 0
-          fi
-
-          mkdir -p daily-logs
-          sed "s/{{DATE}}/${DATE_TITLE}/g" templates/daily-log.md > "$LOG_PATH"
-          echo "created=true" >> "$GITHUB_OUTPUT"
-          echo "Created $LOG_PATH from templates/daily-log.md."
-
-      - name: Commit and push the new starter
+      - name: Commit and push the new daily log
         if: steps.create.outputs.created == 'true'
         shell: bash
         run: |
@@ -44,5 +31,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "daily-logs/${DATE_FILE}.md"
-          git commit -m "docs: create daily log starter for ${DATE_FILE}"
+          git commit -m "docs: draft daily learning log for ${DATE_FILE}"
           git push
