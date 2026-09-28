@@ -1,33 +1,32 @@
-# 🧠 Daily Learning Log — {{DATE}}
+# Daily Learning Log - {{DATE}}
 
-<!-- TEMPLATE: Keep this comment in every daily log. -->
+<!-- Write in plain language. Do not use emojis. Explain technical terms.
+Keep useful details. Mark missing details clearly; do not invent completed work. -->
 
-*A concise record of what I learned, built, and understood today.*
-
-## 📚 Topics Covered
+## Topics
 
 {{TOPICS}}
 
-## 🛠️ What I Worked On
+## What I did
 
 {{WORKED_ON}}
 
-## 💡 What I Learned
+## What I learned
 
 {{LEARNED}}
 
-## ⚠️ Challenge and Fix
+## Problem and solution
 
 {{CHALLENGE_FIX}}
 
-## ✅ Key Assumptions
+## Notes to remember
 
 {{ASSUMPTIONS}}
 
-## 🎯 Next Step
+## Next steps
 
 {{NEXT_STEP}}
 
-## 🌱 Reflection
+## My reflection
 
 {{REFLECTION}}
