@@ -2,6 +2,7 @@
 """Draft a daily Data Engineering log from public GitHub activity and the user's study goal."""
 import json
 import os
+import re
 import urllib.request
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -58,23 +59,15 @@ def event_summary(event):
         return repo, f"published release: {release.get('name') or release.get('tag_name', 'release')}"
     return None
 
-def infer_topics(items):
-    corpus = " ".join((repo + " " + detail) for repo, detail in items).lower()
-    topics = [STUDY_FOCUS, CERT_FOCUS]
-    rules = [
-        (("nyc", "taxi", "mobility"), "NYC Mobility data pipeline"),
-        (("oulad",), "OULAD dimensional modeling"),
-        (("databricks", "delta", "lakehouse"), "Databricks and Lakehouse engineering"),
-        (("great expectations", "data quality", "quality"), "Data quality validation"),
-        (("api", "ingestion", "scrap"), "API ingestion"),
-        (("ci/cd", "workflow", "actions"), "GitHub Actions and CI/CD"),
-        (("doc", "readme"), "Technical documentation"),
-        (("sql", "warehouse", "model"), "SQL and data modeling"),
-    ]
-    for needles, label in rules:
-        if any(n in corpus for n in needles):
-            topics.append(label)
-    return list(dict.fromkeys(topics))
+def remove_emojis(text):
+    """Keep generated logs free of emoji, including copied activity titles."""
+    return re.sub(
+        r"[\U0001F000-\U0001FAFF\u2600-\u27BF\u2300-\u23FF\u2B00-\u2BFF"
+        r"\u200D\u20E3\uFE0E\uFE0F\U000E0020-\U000E007F\u00A9\u00AE\u203C\u2049\u2122\u2139\u3030\u303D\u3297\u3299]",
+        "",
+        text,
+    )
+
 
 def render(template, replacements):
     for key, value in replacements.items():
@@ -96,23 +89,18 @@ def main():
         if item:
             items.append(item)
     items = list(dict.fromkeys(items))[:20]
-    study_line = "- **Ongoing study focus:** Continue Databricks/DataCamp/FTW learning and preparation for the October 17, 2026 Databricks Data Engineer Associate exam."
+    study_line = "- **Study goal:** Prepare for the Databricks Data Engineer Associate exam on October 17, 2026, while learning through Databricks, DataCamp, and FTW. This goal does not confirm a lesson was completed today."
     if items:
-        work = "\n".join(f"- **{repo}:** {detail}" for repo, detail in items) + "\n" + study_line
-        learned = "- Connect today's project activity to the certification concepts you are studying; add the exact lesson or takeaway from today's session."
-        challenge = "- **Challenge:** Not inferable from a GitHub event; record the actual blocker if one occurred, or write “None recorded.”\n- **Fix:** Add the real fix or write “None recorded.”"
-        next_step = "- [ ] Review one Associate exam topic, answer practice questions, and add class or offline work not visible on GitHub."
-        reflection = "I am building my Data Engineering skills through Databricks, DataCamp, FTW learning, and hands-on projects while preparing for the October 17 certification."
-        assumptions = "- This draft uses public GitHub events only; private repositories and work outside GitHub may be missing."
-        topics = infer_topics(items)
+        work = "\n".join(f"- **{repo}:** {detail}" for repo, detail in items) + "\n\n" + study_line
+        topics = ["GitHub project activity", "Ongoing Databricks exam preparation"]
     else:
-        work = study_line + "\n- **Project activity:** No public GitHub event was returned today; add NYC, class, Databricks, or offline work here if applicable."
-        learned = "- Record today's Databricks/DataCamp concept in your own words and connect it to the Associate exam objectives."
-        challenge = "- **Challenge:** Not inferable from today's public GitHub events; add a real blocker if one occurred, or write “None today.”\n- **Fix:** Add the actual fix or write “None today.”"
-        next_step = "- [ ] Review one Associate exam topic, complete practice questions, and note any class or offline study."
-        reflection = "I am steadily preparing for the October 17 Databricks Data Engineer Associate certification while continuing my Data Engineering learning journey."
-        assumptions = "- This draft includes the ongoing study focus you confirmed. No public GitHub events were returned; private or offline work may also have happened."
-        topics = [STUDY_FOCUS, CERT_FOCUS, "Add today's specific lesson or project topic."]
+        work = "No public GitHub activity was found for this date. Class activities, private work, and offline study may be missing.\n\n" + study_line
+        topics = ["Ongoing Data Engineering study goal", "Databricks exam preparation"]
+    learned = "A specific lesson has not been recorded yet. Add what you learned and a simple example."
+    challenge = "**Problem:** Not recorded yet.\n\n**Solution:** Not recorded yet. Add the steps you actually tried and whether they worked."
+    next_step = "- [ ] Add the exact lesson or project task completed.\n- [ ] Review one exam topic and answer practice questions.\n- [ ] Record any problem and the steps used to fix it."
+    reflection = "Not recorded yet. Write what became clearer or what you still need to practice."
+    assumptions = "- This is an automatic draft based on public GitHub activity and the ongoing study goal.\n- GitHub activity does not show every task or prove what was learned.\n- Explain technical terms in plain language, keep useful details, and do not use emojis."
     date_title = TODAY.strftime("%B %-d, %Y")
     content = render(open(TEMPLATE_PATH, encoding="utf-8").read(), {
         "DATE": date_title,
@@ -124,6 +112,7 @@ def main():
         "NEXT_STEP": next_step,
         "REFLECTION": reflection,
     })
+    content = remove_emojis(content)
     os.makedirs("daily-logs", exist_ok=True)
     with open(LOG_PATH, "w", encoding="utf-8") as f:
         f.write(content)
